@@ -9,8 +9,11 @@ jobs:
         with:
           channel: 'stable'
       
-      # تغییر این خط برای اصلاح نام پروژه فلاتر
+      # ابتدا پروژه اندروید ساخته می‌شود
       - run: flutter create --project-name=aslonasab_app --platforms=android --overwrite .
+      
+      # سپس فایل کد اصلی شجره‌نامه شما جایگزین فایل پیش‌فرض فلاتر می‌شود
+      - run: git checkout HEAD -- lib/main.dart
       
       - run: flutter pub get
       - run: flutter build apk --release
@@ -19,3 +22,4 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+          
