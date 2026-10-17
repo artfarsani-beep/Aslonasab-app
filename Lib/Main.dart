@@ -17,7 +17,6 @@ class AslonasabApp extends StatelessWidget {
       title: 'اصل و نسب',
       theme: ThemeData(
         primarySwatch: Colors.green,
-        fontFamily: 'Sans', // برای سازگاری با فونت‌های پیش‌فرض اندروید
       ),
       home: const Directionality(
         textDirection: TextDirection.rtl,
@@ -27,12 +26,11 @@ class AslonasabApp extends StatelessWidget {
   }
 }
 
-// مدل داده‌ای برای ذخیره اطلاعات هر فرد در شجره‌نامه
 class Person {
   final String id;
   String firstName;
   String lastName;
-  String? nickname; // فیلد نام مستعار یا لقب
+  String? nickname;
   String birthDateShamsi;
   String? fatherId;
 
@@ -54,7 +52,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // دیتابیس موقت و نمونه اولیه برای تست برنامه
   final List<Person> people = [
     Person(id: '1', firstName: 'بزرگ', lastName: 'علوی', nickname: 'حاج‌آقا میرزا', birthDateShamsi: '۱۳۰۰/۰۱/۰۱'),
     Person(id: '2', firstName: 'محمد', lastName: 'علوی', birthDateShamsi: '۱۳۳۰/۰۵/۱۲', fatherId: '1'),
@@ -71,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _initGraph();
   }
 
-  // چیدمان گراف و روابط درختی بر اساس ایده الگوبرداری شده
   void _initGraph() {
     for (var person in people) {
       if (person.fatherId != null) {
@@ -87,11 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ..orientation = BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM;
   }
 
-  // سیستم گزارش‌گیری پیشرفته و ساخت فایل اکسل بر اساس معیارهای خواسته شده
   void exportToExcel() async {
     var excel = Excel.createExcel();
-    
-    // ۱. شیت افراد
     Sheet sheetIndividuals = excel['افراد'];
     sheetIndividuals.appendRow([TextCellValue('شناسه'), TextCellValue('نام'), TextCellValue('نام خانوادگی'), TextCellValue('نام مستعار/لقب'), TextCellValue('تاریخ تولد شمسی')]);
     for (var p in people) {
@@ -104,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ]);
     }
 
-    // ۲. شیت روابط خانواده‌ها
     Sheet sheetFamilies = excel['روابط فامیلی'];
     sheetFamilies.appendRow([TextCellValue('شناسه فرزند'), TextCellValue('شناسه پدر')]);
     for (var p in people) {
@@ -113,10 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    // حذف شیت پیش‌فرض اکسل
     excel.delete('Sheet1');
 
-    // ذخیره فایل در حافظه گوشی (بخش دانلودها)
     try {
       var fileBytes = excel.save();
       String filePath = "/storage/emulated/0/Download/shajarenameh_export.xlsx";
@@ -142,7 +132,6 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.file_download),
-            tooltip: 'خروجی اکسل',
             onPressed: exportToExcel,
           )
         ],
@@ -185,36 +174,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (Node node) {
                   var value = node.key!.value as String;
                   var person = people.firstWhere((p) => p.id == value);
-                  return GestureDetector(
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('انتخاب شد: ${person.firstName} ${person.lastName}')),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 5)],
-                        border: Border.all(color: Colors.green, width: 2),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
+                  return Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 5)],
+                      border: Border.all(color: Colors.green, width: 2),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '${person.firstName} ${person.lastName}',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        if (person.nickname != null)
                           Text(
-                            '${person.firstName} ${person.lastName}',
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            '(${person.nickname})',
+                            style: const TextStyle(color: Colors.grey, fontSize: 12, style: FontStyle.italic),
                           ),
-                          if (person.nickname != null)
-                            Text(
-                              '(${person.nickname})',
-                              style: const TextStyle(color: Colors.grey, fontSize: 12, style: FontStyle.italic),
-                            ),
-                          const SizedBox(height: 4),
-                          Text('تولد: ${person.birthDateShamsi}', style: const TextStyle(fontSize: 12)),
-                        ],
-                      ),
+                        const SizedBox(height: 4),
+                        Text('تولد: ${person.birthDateShamsi}', style: const TextStyle(fontSize: 12)),
+                      ],
                     ),
                   );
                 },
