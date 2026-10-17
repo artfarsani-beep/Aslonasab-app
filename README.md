@@ -1,1 +1,0 @@
-# Aslonasab-app
