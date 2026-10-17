@@ -15,8 +15,8 @@ dependencies:
   persian_datetime_picker: ^2.6.0
   shamsi_date: ^0.10.0
 
-  # کتابخانه ساخت و خروجی فایل اکسل
-  excel: ^4.0.8
+  # کتابخانه ساخت و خروجی فایل اکسل (برای حل خطای کامپایل به any تغییر یافت)
+  excel: any
 
   # کتابخانه رسم گراف و ساختار درختی (شبیه به Quick Family Tree)
   graphview: ^1.2.0
@@ -28,4 +28,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
