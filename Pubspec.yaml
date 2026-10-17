@@ -1,0 +1,31 @@
+name: aslonasab_app
+description: "A professional Persian Family Tree Application."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  
+  # کتابخانه تقویم شمسی برای انتخاب و نمایش تاریخ‌ها
+  persian_datetime_picker: ^2.6.0
+  shamsi_date: ^0.10.0
+
+  # کتابخانه ساخت و خروجی فایل اکسل
+  excel: ^4.0.8
+
+  # کتابخانه رسم گراف و ساختار درختی (شبیه به Quick Family Tree)
+  graphview: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
