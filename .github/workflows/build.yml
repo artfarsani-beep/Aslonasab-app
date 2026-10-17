@@ -8,7 +8,10 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: flutter create --platforms=android --overwrite .
+      
+      # تغییر این خط برای اصلاح نام پروژه فلاتر
+      - run: flutter create --project-name=aslonasab_app --platforms=android --overwrite .
+      
       - run: flutter pub get
       - run: flutter build apk --release
       - name: Upload APK
@@ -16,4 +19,3 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-          
